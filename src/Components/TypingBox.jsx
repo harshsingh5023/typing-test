@@ -15,6 +15,10 @@ export default function TypingBox() {
   const [correctChars, setCorrectChars] = useState(0);
   const [correctWords, setCorrectWords] = useState(0); 
   const [wordsArray, setWordsArray] = useState(() => {return randomwords(100)});
+  const [graphData, setGraphData] = useState([]);
+  const [incorrectChars, setIncorrectChars] = useState(0);
+  const [extraChars, setExtraChars] = useState(0);
+  const [missedChars, setMissedChars] = useState(0);
 
   const words = useMemo(() => {
     return wordsArray;
@@ -38,11 +42,27 @@ export default function TypingBox() {
   const inputTextRef = useRef(null);
 
 
+
+
+
+
     const startTimer = () => {
         const intervalId = setInterval(timer, 1000);
         setIntervalId(intervalId);
         function timer(){
             setCountDown(countDown => {
+
+              setCorrectChars((correctChars) => {
+                setGraphData((data) => {
+                  return [...data,[testTime - countDown,Math.round((correctChars/5)/((testTime - countDown + 1)/60))]];
+                })
+                return correctChars;
+              })
+
+
+
+
+
                 if(countDown===1){
                     clearInterval(intervalId);
                     setCountDown(0);
@@ -66,6 +86,9 @@ export default function TypingBox() {
     // Logic of space
     if (e.keyCode === 32) {
       const correctChar = wordSpanRef[currWordIndex].current.querySelectorAll('.correct');
+      const incorrectChar = wordSpanRef[currWordIndex].current.querySelectorAll('.incorrect');
+      setMissedChars(missedChars + (allChildrenSpans.length - (incorrectChar.length + correctChar.length)));
+
       if(correctChar.length === allChildrenSpans.length){
         setCorrectWords(correctWords+1);
       }
@@ -123,6 +146,7 @@ export default function TypingBox() {
 
       wordSpanRef[currWordIndex].current.append(newSpan);
       setCurrCharIndex(currCharIndex + 1);
+      setExtraChars(extraChars+1);
       return;
     }
 
@@ -132,6 +156,7 @@ export default function TypingBox() {
       setCorrectChars(correctChars+1);
     } else {
       allChildrenSpans[currCharIndex].className = "char incorrect";
+      setIncorrectChars(incorrectChars+1);
     }
     if (currCharIndex + 1 === allChildrenSpans.length) {
       allChildrenSpans[currCharIndex].className += " right";
@@ -176,9 +201,10 @@ export default function TypingBox() {
 
   return (
     <div>
-    <UpperMenu countDown={countDown} />
-    {overTest?<Stats wpm={calculateWPM()} accuracy={calculateAccuracy()} />: (
-      <div className="type-box" onClick={focusInput}>
+    {overTest?<Stats wpm={calculateWPM()} accuracy={calculateAccuracy()} graphData={graphData} correctChars={correctChars} incorrectChars={incorrectChars} missedChars={missedChars} extraChars={extraChars} />: (
+      <>
+        <UpperMenu countDown={countDown} />
+        <div className="type-box" onClick={focusInput}>
         <div className="words">
           {/* span of words */}
           {words.map((word, index) => (
@@ -192,6 +218,7 @@ export default function TypingBox() {
           ))}
         </div>
       </div>
+      </>
     )}
 
       <input

@@ -10,7 +10,8 @@ export const GlobalStyles = createGlobalStyle`
 body{
     padding: 0;
     margin: 0;
-    background: yellowgreen;
+    background: ${({theme}) => theme.background};
+    color: ${({theme}) => theme.title};
     transition: all 0.2s linear;
 }
 .canvas{
@@ -143,6 +144,15 @@ body{
     width: 70%;
     // padding: 30px;
 }
+.footer,.header{
+    display: flex;
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: space-between;
+    height: 60px;
+}
+
 
 
 `;
