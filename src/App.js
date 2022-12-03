@@ -8,18 +8,22 @@ import { useTheme } from "./Context/ThemeContext";
 import { Route, Routes } from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import UserPage from "./Pages/UserPage";
+import ComparePage from "./Pages/ComparePage";
 import AlertSnackBar from "./Components/AlertSnackBar";
 
 function App() {
-  
+  const { theme } = useTheme();
   return (
     <>
-    <AlertSnackBar />
-    <Routes>
-      <Route path='/' element={<HomePage />} ></Route>
-      <Route path='/user' element={<UserPage />} ></Route>
-
-    </Routes>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <AlertSnackBar />
+        <Routes>
+          <Route path="/" element={<HomePage />}></Route>
+          <Route path="/user" element={<UserPage />}></Route>
+          <Route path="/compare/:username" element={<ComparePage />}></Route>
+        </Routes>
+      </ThemeProvider>
     </>
   );
 }

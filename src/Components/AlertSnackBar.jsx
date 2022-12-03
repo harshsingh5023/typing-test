@@ -14,7 +14,7 @@ const AlertSnackBar = () => {
         setAlert({
             open:false,
             message: '',
-            type: '',
+            type: 'success',
         });
     }
 
@@ -30,7 +30,7 @@ const AlertSnackBar = () => {
           }}
       >
         <Slide
-            in={alert.open}
+            in={alert.open} 
         >
             <Alert severity={alert.type} onClose={handleClose}>
                 {alert.message}

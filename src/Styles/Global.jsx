@@ -13,7 +13,11 @@ body{
     background: ${({theme}) => theme.background};
     color: ${({theme}) => theme.title};
     transition: all 0.2s linear;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+
 }
+
 .canvas{
     display: grid;
     grid-auto-flow:row;
@@ -39,6 +43,7 @@ body{
     flex-wrap: wrap;
     align-content: center;
     width: 100%;
+    color: ${({theme}) => theme.typeBoxText};
 }
 .word{
     margin:5px;
@@ -48,7 +53,7 @@ body{
     opacity: 0;
 }
 .correct{
-    color: green;
+    color: ${({theme}) => theme.title};
 }
 .incorrect{
     color: red;
@@ -60,19 +65,19 @@ body{
 
     @keyframes blinking{
         0%{
-            border-left-color: #fff;
+            border-left-color: ${({theme}) => theme.title};
         }
         25%{
-            border-left-color: black;
+            border-left-color: ${({theme}) => theme.background};
         }
         50%{
-            border-left-color: #fff;
+            border-left-color: ${({theme}) => theme.title};
         }
         75%{
-            border-left-color: black;
+            border-left-color: ${({theme}) => theme.background};
         }
         100%{
-            border-left-color: #fff;
+            border-left-color: ${({theme}) => theme.title};
         }
     }
 }
@@ -83,19 +88,19 @@ body{
 
     @keyframes blinkingRight{
         0%{
-            border-right-color: #fff;
+            border-left-color: ${({theme}) => theme.title};
         }
         25%{
-            border-right-color: black;
+            border-left-color: ${({theme}) => theme.background};
         }
         50%{
-            border-right-color: #fff;
+            border-left-color: ${({theme}) => theme.title};
         }
         75%{
-            border-right-color: black;
+            border-left-color: ${({theme}) => theme.background};
         }
         100%{
-            border-left-color: #fff;
+            border-left-color: ${({theme}) => theme.title};
         }
     }
 }
@@ -107,20 +112,26 @@ body{
     justify-content: space-between;
     font-size: 20px;
     padding: 1rem;
+    color: ${({theme}) => theme.typeBoxText};
 }
-.time-modes{
+.time-modes, .word-mode{
     display: flex;
 }
 .counter{
     cursor: none;
 }
-.time{
+.time, .no-of-words{
     margin-right: 15px;
 }
-.time:hover{
-    color: yellow;
+.time:hover, .no-of-words:hover{
+    color: ${({theme}) => theme.title};;
     cursor: pointer;
 }
+.mode:hover{
+    color: ${({theme}) => theme.title};
+    cursor: pointer;
+}
+
 .stats-box{
     display: flex;
     max-width: 1000px;
@@ -130,11 +141,11 @@ body{
 }
 .title{
     font-size: 20px;
-    color: grey;
+    color: ${({theme}) => theme.typeBoxText};;
 }
 .subtitle{
     font-size: 30px;
-    color: aqua;
+    color: ${({theme}) => theme.title};;
 }
 .left-stats{
     width: 30%;
@@ -144,7 +155,17 @@ body{
     width: 70%;
     // padding: 30px;
 }
-.footer,.header{
+.footer{
+    display: flex;
+    flex-direction:column;
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+}
+.actual-footer,.header{
     display: flex;
     width: 1000px;
     margin-left: auto;
@@ -152,7 +173,82 @@ body{
     justify-content: space-between;
     height: 60px;
 }
-
-
+.compare{
+    display: flex;
+    width: 1000px;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+    // justify-content: space-between;
+    // height: 60px;
+}
+.hint{
+    kbd{
+        background-color: ${({theme}) => theme.title};
+        color: ${({theme}) => theme.background};
+        padding: 2.5px 5px;
+        border-radius: 3px;
+    }
+}
+.result-graph, .table{
+    width: 1000px;
+    margin: auto;
+}
+.user-profile{
+    width: 1000px;
+    margin: auto;
+    display: flex;
+    min-height: 15rem;
+    background-color: ${({theme})=> theme.typeBoxText};
+    border-radius: 20px;
+}
+.user{
+    display: flex;
+    width: 50%;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 1rem;
+    border-right: 2px solid;
+}
+.picture{
+    width: 50%;
+}
+.info{
+    width:50%;
+    margin-top: 1rem;
+    font-size: 1.6rem;
+    text-align: center;
+    padding: 1rem;
+}
+.total-times{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+}
+.center-of-screen{
+    display: flex;
+    min-height:100vh;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.instruction{
+    color: ${({theme}) => theme.title};
+}
+.reset-btn{
+    display: block;
+    margin: auto;
+    margin-top: 3rem;
+    transform: scale(2);
+}
+.footer-links{
+    display: flex;
+}
+.link{
+    margin-right: 20px;
+}
 
 `;

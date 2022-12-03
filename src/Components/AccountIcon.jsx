@@ -6,7 +6,7 @@ import { makeStyles } from "@material-ui/core";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 import LogoutIcon from '@mui/icons-material/Logout';
-import { auth } from "../firebaseConfig";
+import { auth,db } from "../firebaseConfig";
 import {useAuthState} from 'react-firebase-hooks/auth';
 import { useNavigate } from "react-router-dom";
 import GoogleButton from "react-google-button";
@@ -36,18 +36,28 @@ const AccountIcon = () => {
   const handleValueChange = (e, v) => {
     setValue(v);
   };
-
+  
   const handleClose = () => {
     setOpen(false);
   };
-
+  
   const navigate = useNavigate();
-
+  
   const logout = ()=> {
     auth.signOut().then((res)=>{
-      alert("Logged Out");
+      // alert("Logged Out");
+      setAlert({
+        open: true,
+        type: 'success',
+        message: 'Logged Out'
+      });
     }).catch((err) => {
       alert("not able to log out")
+      setAlert({
+        open: true,
+        type: 'error',
+        message: 'Not able to log out'
+      });
     })
   }
   const [user] = useAuthState(auth);
@@ -64,19 +74,25 @@ const AccountIcon = () => {
   const googleProvider = new GoogleAuthProvider();
 
   const signInWithGoogle = () => {
-    signInWithPopup(auth, googleProvider).then((res)=>{
-      setAlert({
-        open: true,
-        type: 'success',
-        message: 'Logged in'
-      })
-      handleClose();
+    signInWithPopup(auth, googleProvider).then(async (res)=>{
+      const username = res.user.email.split('@')[0];
+      const ref = await db.collection('usernames').doc(username).set({
+        uid: res.user.uid,
+        uname: username
+      }).then((response) => {
+        setAlert({
+          open: true,
+          type: 'success',
+          message: 'Logged in'
+        });
+        handleClose();
+      });
     }).catch((err)=>{
       setAlert({
         open: true,
         type: 'error',
         message: 'Not able to sign in with google'
-      })
+      });
     });
   }
 
@@ -86,8 +102,8 @@ const AccountIcon = () => {
   return (
     <div>
       
-      <AccountCircleIcon onClick={handleAccountIconClick} />
-      {(user) && <LogoutIcon onClick={logout} style={{marginLeft:'5px'}} />}
+      <AccountCircleIcon onClick={handleAccountIconClick} style={{cursor: 'pointer'}} />
+      {(user) && <LogoutIcon onClick={logout} style={{marginLeft:'5px', cursor:'pointer'}} />}
       <Modal open={open} onClose={handleClose} className={classes.modal}>
         <div className={classes.box}>
           <AppBar position='static'
